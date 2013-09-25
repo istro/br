@@ -2,133 +2,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- adding jquery for simplicity of syntax -->
-    <script src='http://code.jquery.com/jquery-1.10.1.js'></script>
-
     <!--
       Just for kicks, I made it work for mobile as well
       (tested only in ios simulator though)
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <style>
-      html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-      }
-
-      #all-keys {
-        border: 1px dashed #000;
-      }
-
-      #log {
-        display: none;
-      }
-
-      .keys {
-        cursor: pointer;
-        display: inline-block;
-        height: 400px;
-        margin: 0 0 30px;
-        padding: 0;
-        position: relative;
-      }
-
-      .keys li {
-        border: 1px solid #000;
-        border-top: none;
-        display: inline-block;
-        height: 100%;
-        width: 70px;
-      }
-
-      .keys span {
-        bottom: 0;
-        font-family: Arial;
-        font-size: 55px;
-        margin: 0 16px 30px;
-        position: absolute;
-      }
-
-      .play {
-        border: 1px solid #000;
-        border-radius: 35px;
-        display: inline-block;
-        height: 18px;
-        padding: 15px;
-        width: 18px;
-      }
-
-      .play #triangle {
-        border-bottom: 10px solid transparent;
-        border-left: 18px solid #000;
-        border-top: 10px solid transparent;
-        margin-left: 3px;
-      }
-
-      .keys .sharp {
-        background-color: #000;
-        color: #fff;
-        height: 62%;
-        margin-left: -20px;
-        position: absolute;
-        width: 40px;
-      }
-
-      .keys .sharp span {
-        font-size: 25px;
-        margin: 0 3px 20px;
-      }
-
-      .pressed {
-        background-color: lightblue !important;
-      }
-
-      .wrapper {
-        width: 504px;
-        margin: 0 auto;
-      }
-
-      @media (max-width: 650px) {
-        #playlist {
-          max-width: 250px;
-        }
-
-        .keys {
-          height: 200px;
-          margin: 0 0 15px;
-        }
-
-        .keys li {
-          width: 35px;
-        }
-
-        .keys span {
-          font-size: 27px;
-          margin: 0 8px 15px;
-        }
-
-        .keys .sharp {
-          margin-left: -10px;
-          width: 20px;
-        }
-
-        .keys .sharp span {
-          font-size: 12px;
-          margin: 0 2px 10px;
-        }
-
-        .play {
-          display: block;
-          margin: 0 auto;
-        }
-
-        .wrapper {
-          width: 260px;
-        }
-      }
-    </style>
+    <link rel='stylesheet' href='br.css'>
   </head>
   <body>
     <div class='wrapper'>
@@ -187,33 +66,6 @@
   </body>
 </html>
 
-<script>
-  var started = false,
-      ended = false;
-  $('#piano')
-    .bind('mousedown touchstart', function(e){
-      if(!started){
-        started = true;
-        setTimeout(function(){ started = false }, 100)
-        $(e.target).closest('li').addClass('pressed');
-      }
-    })
-    .bind('mouseup touchend', function(e){
-      if(!ended){
-        ended = true;
-        setTimeout(function(){ ended = false }, 500)
-        var log = $('#all-keys'),
-            key = $(e.target).find('*').andSelf().filter('span').html();
-        log.html() == '' ? function(){$('#log').show(); log.append(key)}() : log.append(', ' + key);
-      }
-    });
-
-
-  // this listener is on body so that if you click and drag away from a button it will still remove
-  // the highlighting on mouseup
-  $('body').bind('touchend mouseup', function(){
-    $(this).find('li').removeClass('pressed');
-    });
-
-
-</script>
+<!-- adding jquery for simplicity of syntax -->
+<script src='http://code.jquery.com/jquery-1.10.1.js'></script>
+<script src='br.js'></script>
