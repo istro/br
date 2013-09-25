@@ -14,3 +14,4 @@ Add a text field and play button below the log element. When a comma delimited s
 
 - Starting with feature creep - added a iphone-sized variant of css.
 
+- More feature creep - i tied the computer keyboard keys to "press" the piano keys as well - the bottom row, starting from C letter... and black keys are in proper places above them...
