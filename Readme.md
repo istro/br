@@ -8,10 +8,13 @@ Add JavaScript (feel free to use jQuery or another library of your choice) so th
 
 Add a text field and play button below the log element. When a comma delimited string of letters is entered into the text field and the play button is clicked it should highlight the appropriate keys in order for one second at a time.
 
+
 ### Notes as I go along:
 
-- I'll also publish it to [github pages](http://istro.github.io/br/).
+- It's also live right here at [github pages](http://istro.github.io/br/).
 
 - Starting with feature creep - added a iphone-sized variant of css.
 
 - More feature creep - i tied the computer keyboard keys to "press" the piano keys as well - the bottom row, starting from C letter... and black keys are in proper places above them...
+
+- Yet more feature creep - added sounds :P. The bit I found tricky was addressing the proper audio object from getting a string from the activated key's attributes.
