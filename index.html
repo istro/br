@@ -27,6 +27,7 @@
       }
 
       .keys {
+        cursor: pointer;
         display: inline-block;
         height: 400px;
         margin: 0 0 30px;
@@ -67,7 +68,7 @@
       }
 
       .keys .sharp {
-        background: #000;
+        background-color: #000;
         color: #fff;
         height: 62%;
         margin-left: -20px;
@@ -78,6 +79,10 @@
       .keys .sharp span {
         font-size: 25px;
         margin: 0 3px 20px;
+      }
+
+      .pressed {
+        background-color: lightblue !important;
       }
 
       .wrapper {
@@ -127,7 +132,7 @@
   </head>
   <body>
     <div class='wrapper'>
-      <div class='piano'>
+      <div id='piano'>
         <ul class="keys">
            <li id="c">
              <span>C</span>
@@ -181,3 +186,23 @@
     </div>
   </body>
 </html>
+
+<script>
+  $('#piano')
+    .mousedown(function(e){
+      $(e.target).closest('li').addClass('pressed');
+    })
+    .mouseup(function(e){
+      var log = $('#all-keys'),
+          key = $(e.target).find('*').andSelf().filter('span').html();
+      log.html() == '' ? function(){$('#log').show(); log.append(key)}() : log.append(', ' + key);
+    });
+
+  // this listener is on body so that if you click and drag away from a button it will still remove
+  // the highlighting on mouseup
+  $('body').mouseup(function(){
+    $(this).find('li').removeClass('pressed');
+    });
+
+
+</script>

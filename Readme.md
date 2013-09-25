@@ -10,7 +10,7 @@ Add a text field and play button below the log element. When a comma delimited s
 
 ### Notes as I go along:
 
-For simplicity's sake I'll keep it all in one file (although in real world this is also useful - if latency and connection speed are important factors (e.g. if you're targeting mobile users in china)). I'll also publish it to [github pages](http://istro.github.io/br/).
+- For simplicity's sake I'll keep it all in one file (although in real world this is also useful - if latency and connection speed are important factors (e.g. if you're targeting mobile users in china)). I'll also publish it to [github pages](http://istro.github.io/br/).
 
-Starting with feature creep - added a iphone-sized variant of css.
+- Starting with feature creep - added a iphone-sized variant of css.
 
