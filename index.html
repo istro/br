@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
+      .keys {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        height: 400px;
+        position: relative;
+      }
+
+      .keys li {
+        border: 1px solid #000;
+        border-top: none;
+        display: inline-block;
+        width: 70px;
+        height: 100%;
+      }
+
+      .keys span {
+        position: absolute;
+        bottom: 0;
+        font-family: Arial;
+        font-size: 55px;
+        margin: 0 15px 30px;
+      }
+
+      .sharp span {
+        font-size: 25px;
+        margin: 0 3px 20px;
+      }
+
+      .keys .sharp {
+        background: #000;
+        color: #fff;
+        width: 40px;
+        height: 62%;
+        position: absolute;
+        margin-left: -20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='piano'>
+      <ul class="keys">
+         <li id="c">
+           <span>C</span>
+        </li><!--
+      --><li id='csharp' class="sharp">
+          <span>C#</span>
+        </li><!--
+      --><li id="d">
+          <span>D</span>
+        </li><!--
+      --><li id='dsharp' class="sharp">
+          <span>D#</span>
+        </li><!--
+      --><li id="e">
+          <span>E</span>
+        </li><!--
+      --><li id="f">
+          <span>F</span>
+        </li><!--
+      --><li id='fsharp' class="sharp">
+          <span>F#</span>
+        </li><!--
+      --><li id="g">
+          <span>G</span>
+        </li><!--
+      --><li id='gsharp' class="sharp">
+          <span>G#</span>
+        </li><!--
+      --><li id="a">
+          <span>A</span>
+        </li><!--
+      --><li id='asharp' class="sharp">
+          <span>A#</span>
+        </li><!--
+      --><li id="b">
+          <span>B</span>
+        </li>
+      </ul>
+    </div>
+    <div class='controls'>
+      textbox, play button etc
+    </div>
+    <div class='log'>
+      log of all pressed keys goes here
+    </div>
+
+  </body>
+</html>
