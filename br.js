@@ -15,13 +15,19 @@ var started = false,
     gsharp = new Audio('sounds/gsharp.wav'),
     self = this,
     replay = function(){
-      var playlist = $('#playlist').val().replace(/[^a-g#]/g, ''),
-        highlight = function(note){
+      var playlist = $('#playlist').val().toLowerCase().replace(/[^a-g#]|b#|e#/g, '').replace(/##+/g, '#'),
+        playnote = function(note){
           var current = $('#'+note);
           current.trigger('mousedown');
+          setTimeout(function(){current.trigger('mouseup')}, 950);
         };
-
-      //...
+      for(i=1; i<=playlist.length; i++){
+        var suffix = playlist[i] == '#' ? 'sharp' : '',
+            thisnote = playlist[i-1]+suffix;
+        if(suffix)
+          i++;
+        setTimeout( function(x){ return function(){ playnote(x) }; }(thisnote), 1000*i);
+      }
     }
 
 
@@ -54,7 +60,9 @@ $('body').bind('mouseup touchend keyup', function(){
 
 $('#play').bind('mouseup touchend', replay)
 
+
 // Just for fun, i decided to bind some keyboard key codes to the keys as well.
+
 $('body').keydown(function(e){
   var code = e.which;
   switch (code) {
