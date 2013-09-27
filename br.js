@@ -1,128 +1,117 @@
 // the first two variables are to avoid triggering the responses twice on mobile
 var started = false,
     ended = false,
-    a = new Audio('sounds/a.wav'),
-    asharp = new Audio('sounds/asharp.wav'),
-    b = new Audio('sounds/b.wav'),
-    c = new Audio('sounds/c.wav'),
-    csharp = new Audio('sounds/csharp.wav'),
-    d = new Audio('sounds/d.wav'),
-    dsharp = new Audio('sounds/dsharp.wav'),
-    e = new Audio('sounds/e.wav'),
-    f = new Audio('sounds/f.wav'),
-    fsharp = new Audio('sounds/fsharp.wav'),
-    g = new Audio('sounds/g.wav'),
-    gsharp = new Audio('sounds/gsharp.wav'),
     self = this,
-    replay = function(){
-      var playlist = $('#playlist').val().toLowerCase().replace(/[^a-g#]|b#|e#/g, '').replace(/##+/g, '#'),
-        playnote = function(note){
-          var current = $('#'+note);
-          current.trigger('mousedown');
-          setTimeout(function(){current.trigger('mouseup')}, 950);
-        };
-      for(i=1; i<=playlist.length; i++){
-        var suffix = playlist[i] == '#' ? 'sharp' : '',
-            thisnote = playlist[i-1]+suffix;
-        if(suffix)
-          i++;
-        setTimeout( function(x){ return function(){ playnote(x) }; }(thisnote), 1000*i);
-      }
-    }
+    notes = {};
 
+var addNote = function(val){
+  var key = val.length>1 ? val[0]+"#" : val,
+      newNote = {
+        audio: new Audio('sounds/'+val+'.wav'),
+        el: $('#'+val),
+        key: key
+      };
+  notes[val] = newNote;
+}
 
-$('#piano')
-  .bind('mousedown touchstart', function(e){
-    if(!started){
-      started = true;
-      setTimeout(function(){ started = false }, 100);
-      var key = $(e.target).closest('li');
-      self[key.attr('id')].play();
-      $(key).addClass('pressed');
-    }
-  })
-  .bind('mouseup touchend', function(e){
-    if(!ended){
-      ended = true;
-      setTimeout(function(){ ended = false }, 500);
-      var log = $('#all-keys'),
-          key = $(e.target).find('*').andSelf().filter('span').html()
-          note = self[$(e.target).closest('li').attr('id')];
-      log.html() == '' ? function(){$('#log').show(); log.append(key)}() : log.append(', ' + key);
-      note.pause();
-      note.currentTime = 0;
-    }
-  });
+var log = function(note){
+  var list = $('#all-keys'),
+      key = notes[note].key.toUpperCase();
+  list.html() == '' ? function(){$('#log').show(); list.append(key)}() : list.append(', ' + key);
+};
 
-$('body').bind('mouseup touchend keyup', function(){
-    $(this).find('li').removeClass('pressed');
-  });
+var play = function(note){
+  notes[note].audio.play();
+  notes[note].el.addClass('pressed');
+  log(note);
+};
 
-$('#play').bind('mouseup touchend', replay)
+var stop = function(note){
+  notes[note].el.removeClass('pressed');
+  notes[note].audio.pause();
+  notes[note].audio.currentTime = 0;
+}
 
+var replay = function(){
+  var playlist = $('#playlist').val().toLowerCase().replace(/[^a-g#]|b#|e#/g, '').replace(/##+/g, '#'),
+      playnote = function(note){
+        play(note);
+        setTimeout(function(){stop(note);}, 950);
+      };
+
+  for(i=1; i<=playlist.length; i++){
+    var sharp = playlist[i] == '#' ? 'sharp' : '',
+        thisnote = playlist[i-1]+sharp;
+    if(sharp)
+      i++;
+    setTimeout( function(x){ return function(){ playnote(x) }; }(thisnote), 1000*i);
+  }
+};
 
 // Just for fun, i decided to bind some keyboard key codes to the keys as well.
 
-$('body').keydown(function(e){
-  var code = e.which;
-  switch (code) {
-    case 67:
-      $('#c').trigger('mousedown');
-    case 70:
-      $('#csharp').trigger('mousedown');
-    case 86:
-      $('#d').trigger('mousedown');
-    case 71:
-      $('#dsharp').trigger('mousedown');
-    case 66:
-      $('#e').trigger('mousedown');
-    case 78:
-      $('#f').trigger('mousedown');
-    case 74:
-      $('#fsharp').trigger('mousedown');
-    case 77:
-      $('#g').trigger('mousedown');
-    case 75:
-      $('#gsharp').trigger('mousedown');
-    case 188:
-      $('#a').trigger('mousedown');
-    case 76:
-      $('#asharp').trigger('mousedown');
-    case 190:
-      $('#b').trigger('mousedown');
-    default:
-      break;
+var notemap = {
+  67: 'c',
+  70: 'csharp',
+  86: 'd',
+  71: 'dsharp',
+  66: 'e',
+  78: 'f',
+  74: 'fsharp',
+  77: 'g',
+  75: 'gsharp',
+  188: 'a',
+  76: 'asharp',
+  190: 'b',
+};
+
+$('body').on('keydown keyup', function(e){
+  var code = e.which,
+      doit = true;
+
+  // if the event key is a note key and they're not in playlist field - play it
+  if(notemap[code] && e.target.getAttribute('id') != 'playlist') {
+    if(e.type == 'keydown') {
+      play(notemap[code]);
+    } else {
+      stop(notemap[code]);
+    }
   }
 });
 
-$('body').keyup(function(e){
-  var code = e.which;
-  switch (code) {
-    case 67:
-      $('#c').trigger('mouseup');
-    case 70:
-      $('#csharp').trigger('mouseup');
-    case 86:
-      $('#d').trigger('mouseup');
-    case 71:
-      $('#dsharp').trigger('mouseup');
-    case 66:
-      $('#e').trigger('mouseup');
-    case 78:
-      $('#f').trigger('mouseup');
-    case 74:
-      $('#fsharp').trigger('mouseup');
-    case 77:
-      $('#g').trigger('mouseup');
-    case 75:
-      $('#gsharp').trigger('mouseup');
-    case 188:
-      $('#a').trigger('mouseup');
-    case 76:
-      $('#asharp').trigger('mouseup');
-    case 190:
-      $('#b').trigger('mouseup');
-    default:
-      break;
-  }
-});
+///////////////////////////////////////////////////////////////////////////////
+
+var setup = function(){
+  var listOfKeys = $('.keys').children();
+  for(i=0; i<listOfKeys.length; i++){
+    addNote(listOfKeys[i].getAttribute('id'));
+  };
+
+  // Binding the event listeners
+
+  $('#piano')
+    .bind('mousedown touchstart', function(e){
+      if(!started){
+        // These two lines are for avoiding double triggering on mobile
+        started = true;
+        setTimeout(function(){ started = false }, 100);
+        // Find the target key of the click, play it
+        var currentNote = $(e.target).closest('li')[0].getAttribute('id');
+        play(currentNote);
+      }
+    })
+    .bind('mouseup touchend', function(e){
+      if(!ended){
+        // to avoid double triggering on mobile
+        ended = true;
+        setTimeout(function(){ ended = false }, 500);
+        // Find the target key - stop it.
+        var currentNote = $(e.target).closest('li')[0].getAttribute('id');
+        stop(currentNote);
+      }
+    });
+
+  $('#play').bind('mouseup touchend', replay)
+};
+
+$(setup);
